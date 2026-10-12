@@ -1,0 +1,15 @@
+name: poison-cache
+on: [pull_request]
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    steps:
+      - run: mkdir -p cache-dir && echo "poisoned-by-pr-${{ github.event.pull_request.number }}-run-${{ github.run_id }}" > cache-dir/marker.txt
+      - uses: actions/cache@v4
+        id: poison
+        with:
+          path: cache-dir
+          key: poison-test-v1
+      - run: |
+          echo "PR-side restore (sanity): cache-hit=${{ steps.poison.outputs.cache-hit }}"
+          cat cache-dir/marker.txt || echo "no marker"
