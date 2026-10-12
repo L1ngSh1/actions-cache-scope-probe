@@ -1,0 +1,18 @@
+name: consume-cache
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: cache-dir
+          key: poison-test-v1
+          restore-keys: poison-test-
+      - run: |
+          echo "MAIN-side cache-hit=${{ steps.cache.outputs.cache-hit }}"
+          cat cache-dir/marker.txt || echo "NO-MARKER (cache miss on main)"
