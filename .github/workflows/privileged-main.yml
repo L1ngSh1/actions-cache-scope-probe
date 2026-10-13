@@ -1,0 +1,13 @@
+name: privileged-main
+on: workflow_dispatch
+permissions: {}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create secret marker
+        run: echo "TOPSECRET-MAIN-RUN-${{ github.run_id }}-$(date +%s)" > leak.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: privileged-artifact
+          path: leak.txt
