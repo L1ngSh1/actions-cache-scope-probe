@@ -31,9 +31,11 @@ async function main() {
   const plan = claims.plan_id, job = claims.job_id;
   console.log(`plan=${plan} job=${job}`);
 
-  // P3a: ListArtifacts no filter (own scope sanity)
-  let r = await twirp(resultsUrl, token, 'ListArtifacts', {});
-  console.log(`P3A_NOFILTER status=${r.status} body=${r.text}`);
+  // P3a: ListArtifacts with own backend ids (correct proto field names)
+  let r = await twirp(resultsUrl, token, 'ListArtifacts', {
+    workflow_run_backend_id: plan, workflow_job_backend_id: job
+  });
+  console.log(`P3A_NOFILTER status=${r.status} body=${r.text.slice(0, 1200)}`);
 
   // P3b: ListArtifacts idFilter = foreign artifact id (public numeric id)
   const repo = process.env.GITHUB_REPOSITORY;
@@ -49,7 +51,10 @@ async function main() {
   } catch (e) { console.log('LIST_ERR=' + e.message); }
 
   for (const f of foreignIds.slice(0, 3)) {
-    r = await twirp(resultsUrl, token, 'ListArtifacts', { idFilter: { value: String(f.id) } });
+    r = await twirp(resultsUrl, token, 'ListArtifacts', {
+      workflow_run_backend_id: plan, workflow_job_backend_id: job,
+      id_filter: { value: String(f.id) }
+    });
     console.log(`P3B_IDFILTER foreign_id=${f.id} name=${f.name} status=${r.status} body=${r.text}`);
   }
 
