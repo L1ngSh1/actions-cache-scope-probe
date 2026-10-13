@@ -5,6 +5,7 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: P0 action-process probe
         uses: ./probe-action
       - name: P1 decode runtime token claims
