@@ -1,1 +1,1 @@
-probe file v3 token probe
+probe file v4 - force synchronize for P0
