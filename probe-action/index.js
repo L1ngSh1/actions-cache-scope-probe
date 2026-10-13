@@ -53,7 +53,7 @@ async function main() {
   for (const f of foreignIds.slice(0, 3)) {
     r = await twirp(resultsUrl, token, 'ListArtifacts', {
       workflowRunBackendId: plan, workflowJobRunBackendId: job,
-      idFilter: { value: String(f.id) }
+      idFilter: String(f.id)
     });
     console.log(`P3B_IDFILTER foreign_id=${f.id} name=${f.name} status=${r.status} body=${r.text}`);
   }
