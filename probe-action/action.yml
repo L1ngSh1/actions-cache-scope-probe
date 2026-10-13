@@ -1,0 +1,5 @@
+name: 'token probe'
+description: 'probes ACTIONS_RUNTIME_TOKEN cross-run scope from inside an action process'
+runs:
+  using: 'node20'
+  main: 'index.js'
