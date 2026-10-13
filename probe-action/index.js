@@ -33,7 +33,7 @@ async function main() {
 
   // P3a: ListArtifacts with own backend ids (correct proto field names)
   let r = await twirp(resultsUrl, token, 'ListArtifacts', {
-    workflow_run_backend_id: plan, workflow_job_backend_id: job
+    workflowRunBackendId: plan, workflowJobRunBackendId: job
   });
   console.log(`P3A_NOFILTER status=${r.status} body=${r.text.slice(0, 1200)}`);
 
@@ -52,8 +52,8 @@ async function main() {
 
   for (const f of foreignIds.slice(0, 3)) {
     r = await twirp(resultsUrl, token, 'ListArtifacts', {
-      workflow_run_backend_id: plan, workflow_job_backend_id: job,
-      id_filter: { value: String(f.id) }
+      workflowRunBackendId: plan, workflowJobRunBackendId: job,
+      idFilter: { value: String(f.id) }
     });
     console.log(`P3B_IDFILTER foreign_id=${f.id} name=${f.name} status=${r.status} body=${r.text}`);
   }
